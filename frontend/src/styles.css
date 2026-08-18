@@ -1,0 +1,121 @@
+/* ============================================================
+   KHATA — Bank Loan Ledger design tokens
+   Subject: the Indian bank passbook / register — ruled paper,
+   ledger rows, rubber-stamped statuses, brass detailing.
+   ============================================================ */
+
+:root {
+  /* Color */
+  --ink-navy: #101b2d;      /* primary dark surface, "cover" */
+  --ink-navy-soft: #182640;
+  --paper: #f6f3ec;         /* ledger paper */
+  --paper-line: #e3ddc9;    /* faint ruled lines on paper */
+  --text-ink: #16233b;      /* body text on paper */
+  --text-ink-soft: #4a5670;
+  --brass: #b08d4f;         /* accent: brass fittings, seals */
+  --brass-soft: #dcc691;
+  --ledger-green: #2f6e52;  /* approved / positive */
+  --stamp-red: #a23b2e;     /* rejected / alert */
+  --stamp-blue: #2b4c7e;    /* pending / info stamp */
+
+  /* Type */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Menlo, monospace;
+
+  --radius: 3px;
+  --shadow-card: 0 1px 2px rgba(16, 27, 45, 0.06), 0 6px 20px rgba(16, 27, 45, 0.06);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--text-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ruled-paper texture used behind ledger sections */
+.ruled-paper {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 35px,
+    var(--paper-line) 35px,
+    var(--paper-line) 36px
+  );
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--ink-navy);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+a { color: inherit; }
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+input, select, textarea {
+  font-family: var(--font-body);
+}
+
+::selection {
+  background: var(--brass-soft);
+}
+
+/* ============================================================
+   Rubber-stamp status badges — the signature element.
+   Circular, inked, slightly rotated, as if pressed onto the page.
+   ============================================================ */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  transform: rotate(-3deg);
+  white-space: nowrap;
+  background: transparent;
+}
+.stamp--pending    { color: var(--stamp-blue); }
+.stamp--review     { color: var(--brass); border-style: dashed; }
+.stamp--approved   { color: var(--ledger-green); transform: rotate(-4deg); }
+.stamp--rejected   { color: var(--stamp-red); transform: rotate(2deg); }
+.stamp--disbursed  { color: var(--ledger-green); background: rgba(47,110,82,0.08); }
+.stamp--closed     { color: var(--text-ink-soft); border-style: dotted; transform: rotate(1deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Focus visibility (accessibility floor) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+.stamp-btn:focus-visible {
+  outline: 2px solid var(--stamp-blue);
+  outline-offset: 2px;
+}
