@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
@@ -20,6 +20,9 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
           <a routerLink="/customers" routerLinkActive="active">Customers</a>
           <a routerLink="/loans" routerLinkActive="active">Loan Register</a>
           <a routerLink="/emi-calculator" routerLinkActive="active">EMI Calculator</a>
+          @if (installPrompt) {
+            <button class="install-btn" (click)="installApp()">⬇ Install App</button>
+          }
         </nav>
       </div>
       <div class="brass-rule"></div>
@@ -85,6 +88,7 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
     .nav {
       display: flex;
       gap: 4px;
+      align-items: center;
       flex-wrap: wrap;
     }
     .nav a {
@@ -103,6 +107,21 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
     .nav a.active {
       background: var(--ink-navy-soft);
       color: var(--brass-soft);
+    }
+    .install-btn {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #211505;
+      background: var(--brass);
+      border: none;
+      border-radius: 999px;
+      padding: 8px 15px;
+      cursor: pointer;
+      margin-left: 4px;
+    }
+    .install-btn:hover {
+      background: #c9a55f;
     }
     .brass-rule {
       height: 3px;
@@ -126,4 +145,19 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
     }
   `],
 })
-export class AppComponent {}
+export class AppComponent {
+  installPrompt: any = null;
+
+  @HostListener('window:beforeinstallprompt', ['$event'])
+  onBeforeInstallPrompt(event: any) {
+    event.preventDefault();
+    this.installPrompt = event;
+  }
+
+  async installApp() {
+    if (!this.installPrompt) return;
+    this.installPrompt.prompt();
+    await this.installPrompt.userChoice;
+    this.installPrompt = null;
+  }
+}
